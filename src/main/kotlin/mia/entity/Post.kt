@@ -10,6 +10,7 @@
 * 작업자        날짜        수정 / 보완 내용
 * ========================================================
 * 이홍비    2026.08.09     entity 생성
+* 이홍비    2026.08.09     media_id 자료형 변경
 * ========================================================
 */
 
@@ -22,6 +23,7 @@ import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.Table
+import org.hibernate.annotations.CreationTimestamp
 import java.time.LocalDateTime
 
 
@@ -31,10 +33,11 @@ class Post (
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "post_id")
     val postId: Long? = null, // 관리용
 
-    @Column(name = "media_id", nullable = false, unique = true)
-    val mediaId: Long, // 인스타그램 - 게시물 id
+    @Column(name = "media_id", nullable = false, unique = true, length = 100)
+    val mediaId: String, // 인스타그램 - 게시물 id
 
     @Column(name = "product_name", nullable = false, length = 100)
     val productName: String,
@@ -48,11 +51,20 @@ class Post (
     @Column(name = "dm_message", nullable = false, columnDefinition = "TEXT")
     val dmMessage: String,
 
-    @Column(name = "created_date", nullable = false)
+    @Column(name = "instagram_created_date", nullable = false)
+    val instagramCreatedDate: LocalDateTime,
+
+    @CreationTimestamp
+    @Column(name = "created_date", nullable = false, updatable = false)
     val createdDate: LocalDateTime? = null,
 
-    @Column(name = "modified_date", nullable = false)
+    @CreationTimestamp
+    @Column(name = "modified_date", nullable = false, updatable = true)
     val modifiedDate: LocalDateTime? = null
 ) {
-
+    // 출력 형식 지정
+    override fun toString(): String {
+        return "Post (postId : $postId, mediaId : $mediaId, productName = $productName, \n   productURL = $productUrl, \n   keyword = $keyword, \n   dmMessage = $dmMessage, " +
+                "\n   instagramCreatedDate= $instagramCreatedDate, createdDate = $createdDate, modifiedDate = $modifiedDate)"
+    }
 }
