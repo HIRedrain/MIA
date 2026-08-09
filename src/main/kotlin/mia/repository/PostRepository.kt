@@ -23,5 +23,5 @@ import org.springframework.stereotype.Repository
 @Repository
 interface PostRepository: JpaRepository<Post, Long> {
 
-    fun findByMeidaId(mediaId: Long): Post? // mediaId 로 Post get
+    fun findByMediaId(mediaId: String): Post? // mediaId 로 Post get
 }

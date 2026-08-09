@@ -17,8 +17,9 @@
 package mia.dto
 
 data class CommentWebhookRequest (
-    val mediaId: Long,
+    val mediaId: String,
     val commentText: String,
+    val commentId: String, // comment
     val commenterId: String
 ){
 }
