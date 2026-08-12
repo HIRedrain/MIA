@@ -11,6 +11,7 @@
 * 작업자        날짜        수정 / 보완 내용
 * ========================================================
 * 이홍비    2026.08.11     InstagramMedia 작성
+* 이홍비    2026.08.12     mediaProductType null 가능 처리
 * ========================================================
 */
 
@@ -22,5 +23,5 @@ data class InstagramMedia(
     val id: String,
 
     @JsonProperty("media_product_type")
-    val mediaProductType: String // 예 : FEED
+    val mediaProductType: String? = null // 예 : FEED
 )
