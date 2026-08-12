@@ -10,6 +10,7 @@
 * 작업자        날짜        수정 / 보완 내용
 * ========================================================
 * 이홍비    2026.08.09     entity 생성
+* 이홍비    2026.08.12     주석 추가
 * ========================================================
 */
 
@@ -34,17 +35,17 @@ class CommentProcess (
     val cpId: Long? = null, // 관리용
 
     @Column(name = "media_id", nullable = false, length = 100)
-    val mediaId: String,
+    val mediaId: String, // 어떤 게시물인지
 
     @Column(name = "comment_id", nullable = false, unique = true, length = 100)
-    val commentId: String, // 댓글 고유의 id => 중복 될 일 없음
+    val commentId: String, // 댓글 고유의 id => 중복 될 일 없음 // 어떤 댓글인지
 
     @Column(name = "commenter_id", nullable = false, length = 100)
-    val commenterId: String,
+    val commenterId: String, // 작성자가 누구인지
 
     @CreationTimestamp
     @Column(name = "processed_date", nullable = false, updatable = false)
-    val processedDate: LocalDateTime? = null
+    val processedDate: LocalDateTime? = null // 처리 일자
 ) {
     // 출력 형식 지정
     override fun toString(): String {
