@@ -11,12 +11,14 @@
 * ========================================================
 * 이홍비    2026.08.09     Controller 생성
 * 이홍비    2026.08.09     meta api 쪽 webhooks 연결 확인
+* 이홍비    2026.08.12     Webhook 본격 연결
 * ========================================================
 */
 
 package mia.controller
 
 import mia.dto.CommentWebhookRequest
+import mia.dto.InstagramWebhookRequest
 import mia.service.InstagramCommentService
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.web.bind.annotation.GetMapping
@@ -30,21 +32,50 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/webhook")
 class InstagramWebhookController (
-    private val commentService: InstagramCommentService
+    private val instagramCommentService: InstagramCommentService
 ) {
 //    @PostMapping
 //    fun receive(
 //        @RequestBody request: CommentWebhookRequest
 //    ) {
-//        commentService.process(request)
+//        instagramCommentService.process(request)
 //    }
 
+//    @PostMapping
+//    fun receiveWebhook(
+//        @RequestBody body: String
+//    ) {
+//        println("🔥 WEBHOOK")
+//        println(body)
+//    }
+
+
     @PostMapping
-    fun receiveWebhook(
-        @RequestBody body: String
+    fun receive(
+        @RequestBody request: InstagramWebhookRequest
     ) {
-        println("🔥 WEBHOOK")
-        println(body)
+
+        // request: InstagramWebhookRequest - 외부 DTO
+        request.entry.forEach { entry ->
+
+            entry.changes.forEach { change ->
+
+                if (change.field != "comments") {
+                    return@forEach
+                }
+
+                // 내부 DTO 로 변환
+                val comment = change.value
+                val commentWebhookRequest = CommentWebhookRequest(
+                    mediaId = comment.media.id,
+                    commentId = comment.id,
+                    commenterId = comment.from.id,
+                    commentText = comment.text
+                )
+                instagramCommentService.process(commentWebhookRequest)
+            }
+
+        }
     }
 
 
