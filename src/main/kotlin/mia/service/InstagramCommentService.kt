@@ -10,6 +10,7 @@
 * 작업자        날짜        수정 / 보완 내용
 * ========================================================
 * 이홍비    2026.08.09     Service 생성
+* 이홍비    2026.08.17     DM 전송 관련 부분 추가
 * ========================================================
 */
 
@@ -25,7 +26,8 @@ import org.springframework.stereotype.Service
 @Service
 class InstagramCommentService (
     private val postRepository: PostRepository,
-    private val commentProcessRepository: CommentProcessRepository
+    private val commentProcessRepository: CommentProcessRepository,
+    private val instagramMessageService: InstagramMessageService
 ) {
     fun process(request: CommentWebhookRequest) {
 
@@ -56,6 +58,13 @@ class InstagramCommentService (
         println("✅ Keyword : ${post.keyword}")
         println("✅ DM Text : ${request.commentText}")
         println("✅ DM 수신 대상 : ${request.commenterId}")
+
+
+        // 메시지 전송
+        instagramMessageService.sendMessage(
+            recipientId = request.commenterId,
+            message = post.dmMessage
+        )
 
 
         // 처리한 댓글 정보 저장 과정

@@ -11,22 +11,30 @@
 * ========================================================
 * 이홍비    2026.08.09     Service 생성
 * 이홍비    2026.08.10     post crud 처리
+* 이홍비    2026.08.17     getMediaFromPostURL() 내부 구현
 * ========================================================
 */
 
 
 package mia.service
 
+import mia.dto.InstagramMediaListResponse
 import mia.dto.InstagramMediaResponse
 import mia.dto.PostCreateRequest
 import mia.entity.Post
 import mia.repository.PostRepository
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
+import org.springframework.web.client.RestClient
 import java.time.LocalDateTime
 
 @Service
 class PostService (
-    private val postRepository: PostRepository) {
+    private val postRepository: PostRepository,
+    private val restClient: RestClient, // 외부 API 와 통신할 때 사용하는 HTTP Client (Spring 6.1 ~)
+    @Value("\${meta.instagram.access-token}") // yaml 에 저장된 토큰 값 => accessToken 변수로 저장
+    private val accessToken: String
+) {
 
     fun createPost(request: PostCreateRequest) {
 
@@ -49,7 +57,23 @@ class PostService (
     }
 
     private fun getMediaFromPostURL(postURL: String): InstagramMediaResponse? {
-        return null
+        try {
+            // 내 인스타그램 계정의 미디어 목록을 조회 (permalink와 timestamp, id를 포함)
+            val response = restClient.get()
+                .uri("https://graph.instagram.com/v25.0/me/media?fields=id,permalink,timestamp,media_product_type&limit=50&access_token=$accessToken")
+                .retrieve()
+                .body(InstagramMediaListResponse::class.java)
+
+            // 사용자가 입력한 postURL과 API에서 가져온 permalink가 일치하는 항목 탐색
+            val matchedMedia = response?.data?.find { item ->
+                item.permalink != null && postURL.contains(item.permalink.removeSuffix("/"))
+            }
+
+            return matchedMedia
+        } catch (e: Exception) {
+            println("❌ 인스타그램 API 호출 중 오류 발생: ${e.message}")
+            return null
+        }
     }
 
 
