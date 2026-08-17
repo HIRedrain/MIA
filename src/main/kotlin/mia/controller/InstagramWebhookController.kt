@@ -12,6 +12,7 @@
 * 이홍비    2026.08.09     Controller 생성
 * 이홍비    2026.08.09     meta api 쪽 webhooks 연결 확인
 * 이홍비    2026.08.12     Webhook 본격 연결
+* 이홍비    2026.08.17     실제 댓글 관련 Raw JSON 확인
 * ========================================================
 */
 
@@ -21,6 +22,7 @@ import mia.dto.CommentWebhookRequest
 import mia.dto.InstagramWebhookRequest
 import mia.service.InstagramCommentService
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -50,11 +52,22 @@ class InstagramWebhookController (
 //    }
 
 
+//    @PostMapping
+//    fun receive(
+//        @RequestBody body: String
+//    ): ResponseEntity<String> {
+//
+//        println("🔥🔥🔥 WEBHOOK RAW 🔥🔥🔥")
+//        println(body)
+//
+//        return ResponseEntity.ok("EVENT_RECEIVED")
+//    }
+
+
     @PostMapping
     fun receive(
         @RequestBody request: InstagramWebhookRequest
     ) {
-
         // request: InstagramWebhookRequest - 외부 DTO
         request.entry.forEach { entry ->
 

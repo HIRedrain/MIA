@@ -10,6 +10,7 @@
 * 작업자        날짜        수정 / 보완 내용
 * ========================================================
 * 이홍비    2026.08.17     Service 생성
+* 이홍비    2026.08.17     @Service 추가
 * ========================================================
 */
 
@@ -19,8 +20,10 @@ package mia.service
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
+import org.springframework.stereotype.Service
 import org.springframework.web.client.RestClient
 
+@Service
 class InstagramMessageService (
     private val restClient: RestClient, // 외부 API 와 통신할 때 사용하는 HTTP Client (Spring 6.1 ~)
     @Value("\${meta.instagram.access-token}") // yaml 에 저장된 토큰 값 => accessToken 변수로 저장
