@@ -10,6 +10,7 @@
 * 작업자        날짜        수정 / 보완 내용
 * ========================================================
 * 이홍비    2026.08.11     InstagramWebhookEntry 작성
+* 이홍비    2026.08.18     changes nullable 처리
 * ========================================================
 */
 
@@ -20,5 +21,5 @@ package mia.dto
 data class InstagramWebhookEntry(
     val id: String,
     val time: Long, // Json 에서 숫자로 넘어옴
-    val changes: List<InstagramWebhookChange> // 여러 개 넘어올 수 있어서
+    val changes: List<InstagramWebhookChange> ? = null // 여러 개 넘어올 수 있어서
 )
