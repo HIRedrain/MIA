@@ -11,6 +11,7 @@
 * ========================================================
 * 이홍비    2026.08.17     Service 생성
 * 이홍비    2026.08.17     @Service 추가
+* 이홍비    2026.08.18     recipient id => comment_id 로 변경
 * ========================================================
 */
 
@@ -29,10 +30,15 @@ class InstagramMessageService (
     @Value("\${meta.instagram.access-token}") // yaml 에 저장된 토큰 값 => accessToken 변수로 저장
     private val accessToken: String
 ) {
+
     fun sendMessage(
         recipientId: String, // commenterId - 받는 사람 ID
         message: String
     ) {
+
+        println("📨 recipientId = $recipientId")
+        println("📨 message = $message")
+
         restClient.post() // HTTP POST method 사용 => 요청
             .uri("https://graph.instagram.com/v25.0/me/messages") // 인스타그램 메시지 발송 endpoint
             .header( // Header 에 인증 관련 정보 (access-token) 입력
@@ -43,7 +49,7 @@ class InstagramMessageService (
             .body( // 인스타그램 API 규격에 맞는 Payload - Map 형태로 구성
                 mapOf(
                     "recipient" to mapOf(
-                        "id" to recipientId // 받을 사람 ID
+                        "comment_id" to recipientId // 받을 사람 ID - commentId 값으로 해야 함
                     ),
                     "message" to mapOf(
                         "text" to message // 메시지 내용
