@@ -13,6 +13,7 @@
 * 이홍비    2026.08.09     meta api 쪽 webhooks 연결 확인
 * 이홍비    2026.08.12     Webhook 본격 연결
 * 이홍비    2026.08.17     실제 댓글 관련 Raw JSON 확인
+* 이홍비    2026.08.18     request 출력 확인
 * ========================================================
 */
 
@@ -68,10 +69,13 @@ class InstagramWebhookController (
     fun receive(
         @RequestBody request: InstagramWebhookRequest
     ) {
+
+        println("🔥🔥🔥 request: $request 🔥🔥🔥")
+
         // request: InstagramWebhookRequest - 외부 DTO
         request.entry.forEach { entry ->
 
-            entry.changes.forEach { change ->
+            entry.changes?.forEach { change ->
 
                 if (change.field != "comments") {
                     return@forEach
