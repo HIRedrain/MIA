@@ -40,16 +40,16 @@ class Post (
     val mediaId: String, // 인스타그램 - 게시물 id
 
     @Column(name = "product_name", nullable = false, length = 100)
-    val productName: String,
+    var productName: String,
 
     @Column(name = "product_url", nullable = false, columnDefinition = "TEXT")
-    val productUrl: String,
+    var productUrl: String,
 
     @Column(name = "keyword", nullable = false, length = 30)
-    val keyword: String,
+    var keyword: String,
 
     @Column(name = "dm_message", nullable = false, columnDefinition = "TEXT")
-    val dmMessage: String,
+    var dmMessage: String,
 
     @Column(name = "instagram_created_date", nullable = false)
     val instagramCreatedDate: LocalDateTime,
