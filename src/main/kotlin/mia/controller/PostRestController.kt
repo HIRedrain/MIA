@@ -13,6 +13,8 @@
 * 이홍비    2026.08.10     save => create 로 변경
 * 이홍비    2026.08.10     crud
 * 이홍비    2026.08.20     rest controller 로 변경
+* 이홍비    2026.09.06     Pageing 처리
+* 이홍비    2026.09.07     Mapping 처리 보완
 * ========================================================
 */
 
@@ -22,6 +24,7 @@ import mia.dto.PostCreateRequest
 import mia.dto.PostResponse
 import mia.dto.PostUpdateRequest
 import mia.service.PostService
+import org.springframework.data.domain.Page
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -31,6 +34,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -40,8 +44,10 @@ class PostRestController (
 ) {
 
     @GetMapping
-    fun getPosts(): ResponseEntity<List<PostResponse>> {
-        return ResponseEntity.ok(postService.getPosts())
+    fun getPosts(
+        @RequestParam(defaultValue = "0") page: Int
+    ): ResponseEntity<Page<PostResponse>> {
+        return ResponseEntity.ok(postService.getPosts(page))
     }
 
     @GetMapping("/{pid}")
@@ -61,16 +67,16 @@ class PostRestController (
         return ResponseEntity.status(HttpStatus.CREATED).body(post) // 201
     }
 
-    @PostMapping("/test")
-    fun createPostTest(
-        @RequestBody request: PostCreateRequest
-    ): String {
-        postService.createPostTest(request)
+//    @PostMapping("/test")
+//    fun createPostTest(
+//        @RequestBody request: PostCreateRequest
+//    ): String {
+//        postService.createPostTest(request)
+//
+//        return ""
+//    }
 
-        return ""
-    }
-
-    @PutMapping
+    @PutMapping("/{pid}")
     fun updatePost(
         @PathVariable("pid") pid: Long,
         @RequestBody request: PostUpdateRequest
@@ -79,7 +85,7 @@ class PostRestController (
         return ResponseEntity.ok(postService.updatePost(pid, request)) // 200
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{pid}")
     fun deletePost(
         @PathVariable("pid") pid: Long
     ): ResponseEntity<Void> {
