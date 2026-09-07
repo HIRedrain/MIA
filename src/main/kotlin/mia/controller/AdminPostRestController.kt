@@ -1,6 +1,6 @@
-/* PostRestController.kt
+/* AdminPostRestController.kt
 * MIA - 인스타그램 자동화
-* 인스타그램 게시물 관련 처리 rest controller
+* 관리자 - 인스타그램 게시물 관련 처리 rest controller
 * 작성자 : 이홍비
 * 최초 작성 날짜 : 2026.08.09
 *
@@ -15,6 +15,7 @@
 * 이홍비    2026.08.20     rest controller 로 변경
 * 이홍비    2026.09.06     Pageing 처리
 * 이홍비    2026.09.07     Mapping 처리 보완
+* 이홍비    2026.09.07     api 변경, 클래스명 변경
 * ========================================================
 */
 
@@ -38,8 +39,8 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/posts")
-class PostRestController (
+@RequestMapping("/api/admin/posts")
+class AdminPostRestController (
     val postService: PostService
 ) {
 
