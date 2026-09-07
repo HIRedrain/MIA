@@ -1,0 +1,41 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>새 게시물 등록 · MIA</title><link rel="stylesheet" href="/css/mia.css"></head><body>
+<div class="app-shell">
+<aside class="sidebar">
+  <a class="brand" href="/admin"><div class="brand-mark">M</div><div><div class="brand-title">MIA</div><div class="brand-sub">cozy automation</div></div></a>
+  <nav class="nav">
+    <a href="/admin" class=""><span class="ico">⌂</span><span>대시보드</span></a>
+    <a href="/admin/posts" class="active"><span class="ico">▦</span><span>게시물 관리</span></a>
+  </nav>
+</aside>
+<main class="main">
+
+<div class="topbar">
+  <div><div class="eyebrow">Create post</div><h1>새 게시물 등록</h1><p class="subcopy">Instagram 게시물 URL을 연결하고 자동 DM 정보를 설정합니다.</p></div>
+</div>
+<section class="card form-card">
+  <div class="notice notice-info">이미지는 별도로 업로드하지 않습니다. 등록하면 Instagram에서 대표 이미지를 자동으로 가져옵니다.</div>
+  <form id="post-form" style="margin-top:22px">
+    <div class="form-grid">
+      <div class="field full">
+        <label for="postURL">Instagram 게시물 URL</label>
+        <input id="postURL" name="postURL" type="url" placeholder="https://www.instagram.com/p/..." required>
+        <small>현재 연결된 Instagram 계정의 게시물 URL을 입력하세요.</small>
+      </div>
+      <div class="field">
+        <label for="productName">제품명</label><input id="productName" name="productName" required maxlength="100" placeholder="예: 순면 방수 패드">
+      </div>
+      <div class="field">
+        <label for="keyword">댓글 키워드</label><input id="keyword" name="keyword" required maxlength="30" placeholder="예: 제품 정보">
+      </div>
+      <div class="field full">
+        <label for="productURL">제품 URL</label><input id="productURL" name="productURL" type="url" required placeholder="https://...">
+      </div>
+      <div class="field full">
+        <label for="dmMessage">DM 메시지</label><textarea id="dmMessage" name="dmMessage" required placeholder="요청하신 제품 정보를 보내드립니다."></textarea>
+      </div>
+    </div>
+    <div class="form-actions"><a class="btn btn-secondary" href="/admin/posts">취소</a><button class="btn btn-primary" type="submit">등록하기</button></div>
+  </form>
+</section>
+</main></div><script src="/js/common.js"></script><script src="/js/post-create.js"></script></body></html>

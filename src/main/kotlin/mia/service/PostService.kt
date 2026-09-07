@@ -12,6 +12,10 @@
 * 이홍비    2026.08.09     Service 생성
 * 이홍비    2026.08.10     post crud 처리
 * 이홍비    2026.08.17     getMediaFromPostURL() 내부 구현
+* 이홍비    2026.08.21     RUD 구현
+* 이홍비    2026.09.06     전반적인 함수 구현 (반환 관련 처리 등)
+* 이홍비    2026.09.06     Paging 기법 처리
+* 이홍비    2026.09.07     이미지 관련 처리
 * ========================================================
 */
 
@@ -21,10 +25,19 @@ package mia.service
 import mia.dto.InstagramMediaListResponse
 import mia.dto.InstagramMediaResponse
 import mia.dto.PostCreateRequest
+import mia.dto.PostResponse
+import mia.dto.PostUpdateRequest
 import mia.entity.Post
+import mia.extension.toResponse
 import mia.repository.PostRepository
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.client.RestClient
 import java.time.LocalDateTime
 
@@ -36,16 +49,22 @@ class PostService (
     private val accessToken: String
 ) {
 
-    fun createPost(request: PostCreateRequest) {
+    @Transactional
+    fun createPost(request: PostCreateRequest): PostResponse {
 
         val media = getMediaFromPostURL(request.postURL)
-        if (media == null) {
-            println("❌ 존재하지 않는 게시물")
-            return
+            ?: throw IllegalArgumentException("존재하지 않는 Instagram 게시물입니다.")
+
+        if (postRepository.existsByMediaId(media.id)) {
+            throw IllegalArgumentException("이미 등록된 인스타그램 게시물 주소입니다.")
         }
+
+
 
         val post = Post(
             mediaId = media.id,
+            instagramUrl = media.permalink ?: request.postURL,
+            imageUrl = media.imageUrl,
             productName = request.productName,
             productUrl = request.productURL,
             keyword = request.keyword,
@@ -53,14 +72,16 @@ class PostService (
             instagramCreatedDate = media.instagramCreatedDate
         )
 
-        println("✅ post 저장 : ${postRepository.save(post)}")
+        println("✅ post 저장 : $post")
+
+        return postRepository.save(post).toResponse()
     }
 
     private fun getMediaFromPostURL(postURL: String): InstagramMediaResponse? {
         try {
             // 내 인스타그램 계정의 미디어 목록을 조회 (permalink와 timestamp, id를 포함)
             val response = restClient.get()
-                .uri("https://graph.instagram.com/v25.0/me/media?fields=id,permalink,timestamp,media_product_type&limit=50&access_token=$accessToken")
+                .uri("https://graph.instagram.com/v25.0/me/media?fields=id,permalink,timestamp,media_product_type,media_type,media_url,thumbnail_url&limit=50&access_token=$accessToken")
                 .retrieve()
                 .body(InstagramMediaListResponse::class.java)
 
@@ -77,21 +98,65 @@ class PostService (
     }
 
 
+//    fun createPostTest(request: PostCreateRequest) {
+//
+//        println("✅ $request")
+//
+//        val post = Post(
+//            mediaId = "137",
+//            productName = request.productName,
+//            productUrl = request.productURL,
+//            keyword = request.keyword,
+//            dmMessage = request.dmMessage,
+//            instagramCreatedDate = LocalDateTime.now()
+//        )
+//
+//        println("✅ post 저장 : ${postRepository.save(post)}")
+//    }
 
-    fun createPostTest(request: PostCreateRequest) {
 
-        println("✅ $request")
+    @Transactional(readOnly = true)
+    fun getPosts(page: Int): Page<PostResponse> {
+        //return postRepository.findAll().map { it.toResponse() }
 
-        val post = Post(
-            mediaId = "137",
-            productName = request.productName,
-            productUrl = request.productURL,
-            keyword = request.keyword,
-            dmMessage = request.dmMessage,
-            instagramCreatedDate = LocalDateTime.now()
+        val pageable = PageRequest.of(
+            page,
+            10,
+            Sort.by(Sort.Direction.DESC, "instagramCreatedDate")
         )
 
-        println("✅ post 저장 : ${postRepository.save(post)}")
+        return postRepository.findAll(pageable).map { it.toResponse() }
+    }
+
+    @Transactional(readOnly = true)
+    fun getPost(pid: Long): PostResponse {
+        return postRepository.findById(pid).map { it.toResponse() }
+            .orElseThrow { IllegalArgumentException("존재하지 않는 Instagram 게시물입니다.") }
+    }
+
+    @Transactional
+    fun updatePost(pid: Long, request: PostUpdateRequest): PostResponse {
+        val post = postRepository.findById(pid)
+            .orElseThrow { IllegalArgumentException("존재하지 않는 Instagram 게시물입니다.") }
+
+        post.productName = request.productName
+        post.productUrl = request.productURL
+        post.keyword = request.keyword
+        post.dmMessage = request.dmMessage
+
+        val updatePost = postRepository.save(post) // 명시
+
+        println("✅ post 갱신 : $updatePost")
+
+        return updatePost.toResponse()
+    }
+
+    @Transactional
+    fun deletePost(pid: Long) {
+        val post = postRepository.findById(pid)
+            .orElseThrow { IllegalArgumentException("존재하지 않는 Instagram 게시물입니다.") }
+
+        println("✅ post 삭제 : ${postRepository.delete(post)}")
     }
 
 }
