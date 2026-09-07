@@ -13,12 +13,14 @@
 * 이홍비    2026.08.09     dto 생성
 * 이홍비    2026.08.12     주석 추가
 * 이홍비    2026.08.17     Formatter 추가
+* 이홍비    2026.09.07     이미지 관련 항목 추가
 * ========================================================
 */
 
 
 package mia.dto
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneId
@@ -27,7 +29,17 @@ import java.time.format.DateTimeFormatter
 data class InstagramMediaResponse(
     val id: String,
     val timestamp: String,
-    val permalink: String? = null
+    val permalink: String? = null,
+
+    @JsonProperty("media_type")
+    val mediaType: String? = null,
+
+    @JsonProperty("media_url")
+    val mediaUrl: String? = null,
+
+    @JsonProperty("thumbnail_url")
+    val thumbnailUrl: String? = null
+
 ) {
 
     // 한국 시간(LocalDateTime)으로 가져오는 Custom Getter
@@ -42,5 +54,9 @@ data class InstagramMediaResponse(
                 .atZoneSameInstant(ZoneId.of("Asia/Seoul")) // 한국 표준시로 변환 => 내부적으로 UTC + 9시간 => 한국 시간으로 보정
                 .toLocalDateTime() // 순수 날짜와 시간만 남김
         }
+
+
+    val imageUrl: String?
+        get() = thumbnailUrl ?: mediaUrl // thumbnailUrl != null => thumbnailUrl 바환, else => mediaUrl 반환
 
 }

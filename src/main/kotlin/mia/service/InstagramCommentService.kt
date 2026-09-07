@@ -13,6 +13,7 @@
 * 이홍비    2026.08.17     DM 전송 관련 부분 추가
 * 이홍비    2026.08.18     DM 보낼 때 수신자 ID는 CommentId 를 써야 함
 *                         url 과 message 한 번에 보내기
+* 이홍비    2026.09.07     process() 내 코드 순서 변경
 * ========================================================
 */
 
@@ -36,12 +37,7 @@ class InstagramCommentService (
     @Transactional
     fun process(request: CommentWebhookRequest) {
 
-        if (commentProcessRepository.existsByCommentId(request.commentId)) {
-            // 이미 처리한 댓글
-            println("❗ 이미 처리한 댓글 ❗")
-            return
-        }
-
+        // 1. 게시물 존재 여부 확인 (DB에서 관리하는 애인지 아닌지)
         val post =
             postRepository.findByMediaId(request.mediaId)  // ?: return // null 이 아니면 post 객체를 변수에 저장하고, null 이면 return (함수 종료)
         if (post == null) {
@@ -50,7 +46,15 @@ class InstagramCommentService (
             return
         }
 
+        // 2. 이미 처리한 댓글인지 확인
+        if (commentProcessRepository.existsByCommentId(request.commentId)) {
+            // 이미 처리한 댓글
+            println("❗ 이미 처리한 댓글 ❗")
+            return
+        }
 
+
+        // 3. 핵심 단어 포함 여부 확인
         val normalizedComment = normalize(request.commentText)
         val normalizedKeyword = normalize(post.keyword)
         //if (request.commentText != post.keyword) {
@@ -66,6 +70,8 @@ class InstagramCommentService (
         println("✅ Comment Id : ${request.commentId}")
         println("✅ DM 수신 대상 : ${request.commenterId}") // recipient Id 가 이 값이 아님 - Comment Id를 수신자 ID 로 해서 DM 보내야 함
 
+
+        // 4. 메시지 전송
 
         // 메시지 전송 - url
 //        instagramMessageService.sendMessage(
@@ -96,7 +102,7 @@ class InstagramCommentService (
             message = urlMsg
         )
 
-        // 처리한 댓글 정보 저장 과정
+        // 5. 처리한 댓글 정보 저장 과정
         val commentProcess = CommentProcess(
             mediaId = request.mediaId,
             commentId = request.commentId,
