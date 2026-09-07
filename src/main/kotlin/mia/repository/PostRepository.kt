@@ -10,6 +10,7 @@
 * 작업자        날짜        수정 / 보완 내용
 * ========================================================
 * 이홍비    2026.08.09     Repository 생성
+* 이홍비    2026.09.07     existsByMediaId() 추가
 * ========================================================
 */
 
@@ -24,4 +25,5 @@ import org.springframework.stereotype.Repository
 interface PostRepository: JpaRepository<Post, Long> {
 
     fun findByMediaId(mediaId: String): Post? // mediaId 로 Post get
+    fun existsByMediaId(mediaId: String): Boolean // mediaId 가 존재하는가
 }
