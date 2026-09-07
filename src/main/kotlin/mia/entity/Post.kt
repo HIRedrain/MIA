@@ -11,6 +11,8 @@
 * ========================================================
 * 이홍비    2026.08.09     entity 생성
 * 이홍비    2026.08.09     media_id 자료형 변경
+* 이홍비    2026.09.06     modifiedDate : @UpdateTimestamp 로 변경
+* 이홍비    2026.09.07     instagramUrl 추가
 * ========================================================
 */
 
@@ -24,6 +26,7 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.Table
 import org.hibernate.annotations.CreationTimestamp
+import org.hibernate.annotations.UpdateTimestamp
 import java.time.LocalDateTime
 
 
@@ -38,6 +41,12 @@ class Post (
 
     @Column(name = "media_id", nullable = false, unique = true, length = 100)
     val mediaId: String, // 인스타그램 - 게시물 id
+
+    @Column(name = "instagram_url", nullable = false, length = 500)
+    val instagramUrl: String,
+
+    @Column(name = "image_url", columnDefinition = "TEXT")
+    val imageUrl: String? = null,
 
     @Column(name = "product_name", nullable = false, length = 100)
     var productName: String,
@@ -58,7 +67,7 @@ class Post (
     @Column(name = "created_date", nullable = false, updatable = false)
     val createdDate: LocalDateTime? = null,
 
-    @CreationTimestamp
+    @UpdateTimestamp
     @Column(name = "modified_date", nullable = false, updatable = true)
     val modifiedDate: LocalDateTime? = null
 ) {
