@@ -15,6 +15,10 @@ build/
 *.properties
 application.yaml
 
+# Gradle Wrapper는 Git에 포함
+!gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.properties
+
 ### Eclipse ###
 .metadata
 bin/
