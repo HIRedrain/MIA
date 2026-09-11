@@ -242,3 +242,253 @@ tr:last-child td{border-bottom:0}
     font-size:19px;
   }
 }
+/* ===== Admin sidebar account / footer ===== */
+.sidebar{
+  display:flex;
+  flex-direction:column;
+}
+
+.sidebar-top{
+  min-height:0;
+}
+
+.sidebar-account{
+  margin-top:auto;
+}
+
+.sidebar-account-divider{
+  height:1px;
+  margin:18px 2px 16px;
+  background:var(--line);
+}
+
+.sidebar-profile{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  min-width:0;
+  padding:4px 6px 12px;
+}
+
+.profile-avatar{
+  flex:0 0 38px;
+  width:38px;
+  height:38px;
+  display:grid;
+  place-items:center;
+  border-radius:13px;
+  background:#fff;
+  border:1px solid var(--line);
+  box-shadow:0 5px 16px rgba(50,60,65,.06);
+  color:var(--primary-dark);
+  font-size:14px;
+  font-weight:850;
+}
+
+.profile-copy{
+  min-width:0;
+}
+
+.profile-nickname{
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  color:var(--text);
+  font-size:14px;
+  font-weight:800;
+}
+
+.profile-role{
+  margin-top:3px;
+  color:var(--muted);
+  font-size:11px;
+  font-weight:750;
+  letter-spacing:.08em;
+}
+
+.sidebar-logout{
+  width:100%;
+  min-height:42px;
+  display:flex;
+  align-items:center;
+  gap:11px;
+  padding:10px 12px;
+  border:0;
+  border-radius:12px;
+  background:transparent;
+  color:#68757b;
+  font-size:13px;
+  font-weight:750;
+  text-align:left;
+  transition:.16s ease;
+}
+
+.sidebar-logout:hover{
+  background:#fff;
+  color:var(--danger);
+  box-shadow:0 8px 24px rgba(50,60,65,.05);
+}
+
+.logout-icon{
+  width:22px;
+  text-align:center;
+  font-size:17px;
+}
+
+.main{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+
+.app-footer{
+  width:100%;
+  margin-top:auto;
+  padding:42px 0 0;
+  text-align:center;
+}
+
+.app-footer p{
+  margin:0;
+  color:#9aa1a4;
+  font-size:12px;
+  line-height:1.5;
+}
+
+@media(max-width:980px){
+  .sidebar-profile{
+    justify-content:center;
+    padding-left:0;
+    padding-right:0;
+  }
+
+  .profile-copy,
+  .sidebar-logout span:not(.logout-icon){
+    display:none;
+  }
+
+  .sidebar-logout{
+    justify-content:center;
+    padding-left:0;
+    padding-right:0;
+  }
+
+  .sidebar-account-divider{
+    margin-left:0;
+    margin-right:0;
+  }
+}
+
+@media(max-width:680px){
+  .sidebar-top{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    min-width:0;
+    flex:1;
+  }
+
+  .sidebar-account{
+    margin-top:0;
+    margin-left:auto;
+  }
+
+  .sidebar-account-divider,
+  .sidebar-profile{
+    display:none;
+  }
+
+  .sidebar-logout{
+    width:42px;
+    min-width:42px;
+  }
+
+  .app-footer{
+    padding-top:34px;
+  }
+}
+
+
+/* =========================================================
+   Admin topbar home button
+   - 로그인 화면의 홈 버튼과 같은 둥근 정사각형 언어
+   - 기능 버튼보다 조용한 navigation action
+   ========================================================= */
+.admin-home-button{
+  width:42px;
+  height:42px;
+  flex:0 0 42px;
+
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+
+  border:1px solid rgba(111,135,146,.22);
+  border-radius:13px;
+
+  background:#e8eff1;
+  color:#526b75;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.68);
+
+  transition:
+    transform .16s ease,
+    background-color .16s ease,
+    border-color .16s ease,
+    box-shadow .16s ease;
+}
+
+.admin-home-button svg{
+  width:17px;
+  height:17px;
+  fill:currentColor;
+}
+
+.admin-home-button:hover{
+  transform:translateY(-1px);
+
+  background:#e1eaed;
+  border-color:rgba(111,135,146,.32);
+
+  box-shadow:
+    0 7px 18px rgba(74,94,103,.09),
+    inset 0 1px 0 rgba(255,255,255,.72);
+}
+
+
+/* =========================================================
+   Post detail - content actions
+   수정/삭제는 navigation이 아니라 현재 게시물 action이므로
+   왼쪽 Instagram 카드 하단에 배치합니다.
+   ========================================================= */
+.detail-card-actions{
+  display:flex;
+  align-items:center;
+  gap:9px;
+
+  margin-top:16px;
+  padding:16px 4px 3px;
+
+  border-top:1px solid var(--line);
+}
+
+.detail-card-actions .btn{
+  flex:1;
+}
+
+.detail-instagram-link{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  margin-top:8px;
+
+  color:var(--primary-dark);
+  font-size:12px;
+  font-weight:750;
+}
+
+.detail-instagram-link:hover{
+  text-decoration:underline;
+}
+

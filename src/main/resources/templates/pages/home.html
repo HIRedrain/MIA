@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MIA</title>
+
+    <link rel="stylesheet" th:href="@{/css/mia.css}">
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+</head>
+
+<body class="home-page">
+
+<header class="home-header">
+    <a href="/" class="home-brand" aria-label="MIA 홈">
+        <div class="home-brand-mark">M</div>
+
+        <div class="home-brand-copy">
+            <span class="home-brand-eyebrow">INSTAGRAM AUTOMATION</span>
+            <strong>MIA</strong>
+        </div>
+    </a>
+
+    <div class="home-header-actions">
+
+        <!-- 비로그인 상태 -->
+        <div id="guestHeaderActions" class="header-action-group">
+            <a href="/login" class="header-link">로그인</a>
+            <a href="/signup" class="header-button">회원가입</a>
+        </div>
+
+        <!-- 로그인 상태 -->
+        <div id="authHeaderActions" class="header-action-group" hidden>
+            <div class="home-user">
+                <div class="home-user-avatar" id="userAvatar">M</div>
+
+                <div class="home-user-copy">
+                    <strong id="userNickname">사용자</strong>
+                    <span id="userRole">CLIENT</span>
+                </div>
+            </div>
+
+            <a
+                href="/admin"
+                id="adminPageButton"
+                class="admin-page-button"
+                hidden
+            >
+                <svg viewBox="0 0 16 16" aria-hidden="true">
+                    <path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h4A1.5 1.5 0 0 1 8 2.5v4A1.5 1.5 0 0 1 6.5 8h-4A1.5 1.5 0 0 1 1 6.5zM2.5 2a.5.5 0 0 0-.5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 0-.5-.5zM8 9.5A1.5 1.5 0 0 1 9.5 8h4A1.5 1.5 0 0 1 15 9.5v4a1.5 1.5 0 0 1-1.5 1.5h-4A1.5 1.5 0 0 1 8 13.5zm1.5-.5a.5.5 0 0 0-.5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 0-.5-.5zM9 2.5A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5zM1 10.5A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5z"/>
+                </svg>
+                <span>관리자 페이지</span>
+            </a>
+
+            <button
+                type="button"
+                id="logoutButton"
+                class="logout-button"
+            >
+                로그아웃
+            </button>
+        </div>
+
+    </div>
+</header>
+
+
+<main class="home-main">
+
+    <section class="hero">
+        <div class="hero-copy">
+
+            <div class="hero-badge">
+                MIA · Mellow Instagram Automation
+            </div>
+
+            <h1>
+                필요한 순간에,<br>
+                필요한 메시지를.
+            </h1>
+
+            <p class="hero-description">
+                댓글과 게시물을 연결하고,
+                반복되는 Instagram 응답을 더 편안하게 관리하세요.
+            </p>
+
+            <!-- 비로그인 CTA -->
+            <div id="guestHeroActions" class="hero-actions">
+                <a href="/login" class="primary-button">
+                    MIA 시작하기
+                </a>
+
+                <a href="/signup" class="secondary-button">
+                    계정 만들기
+                </a>
+            </div>
+
+            <!-- 로그인 CTA -->
+            <div id="authHeroActions" class="hero-actions" hidden>
+                <a href="#features" class="primary-button">
+                    MIA 둘러보기
+                </a>
+            </div>
+
+            <!-- 로그인 사용자 환영 메시지 -->
+            <div id="welcomeMessage" class="welcome-card" hidden>
+                <span class="welcome-dot"></span>
+                <p>
+                    <strong id="welcomeNickname">사용자</strong> 님,
+                    MIA에 오신 것을 환영합니다.
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="hero-visual" aria-hidden="true">
+
+            <div class="visual-card visual-card-main">
+                <div class="visual-card-top">
+                    <div class="visual-avatar">M</div>
+
+                    <div>
+                        <span class="visual-small">MIA AUTOMATION</span>
+                        <strong>Comment → Message</strong>
+                    </div>
+                </div>
+
+                <div class="visual-message">
+                    <span class="visual-message-label">NEW COMMENT</span>
+                    <p>“제품 정보 부탁드려요 🤍”</p>
+                </div>
+
+                <div class="visual-flow">
+                    <span>댓글 확인</span>
+                    <span class="visual-arrow">→</span>
+                    <span>키워드 매칭</span>
+                    <span class="visual-arrow">→</span>
+                    <span>DM 발송</span>
+                </div>
+            </div>
+
+            <div class="visual-card visual-card-small">
+                <span class="status-dot"></span>
+                <div>
+                    <span>Automation</span>
+                    <strong>Ready</strong>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <section id="features" class="feature-section">
+
+        <div class="section-heading">
+            <span>MIA FEATURES</span>
+            <h2>반복되는 Instagram 업무를 조금 더 가볍게.</h2>
+        </div>
+
+        <div class="feature-grid">
+
+            <article class="feature-card">
+                <div class="feature-number">01</div>
+                <h3>게시물 연결</h3>
+                <p>
+                    Instagram 게시물과 상품 정보를 연결해
+                    필요한 자동화 기준을 관리합니다.
+                </p>
+            </article>
+
+            <article class="feature-card">
+                <div class="feature-number">02</div>
+                <h3>댓글 키워드 확인</h3>
+                <p>
+                    등록한 키워드가 댓글에 포함되면
+                    해당 게시물의 설정을 기준으로 처리합니다.
+                </p>
+            </article>
+
+            <article class="feature-card">
+                <div class="feature-number">03</div>
+                <h3>메시지 자동화</h3>
+                <p>
+                    반복해서 전달해야 하는 안내와 상품 정보를
+                    Instagram 메시지로 연결합니다.
+                </p>
+            </article>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<th:block th:replace="~{fragments/footer :: footer}"></th:block>
+
+<script th:src="@{/js/home.js}"></script>
+
+</body>
+</html>

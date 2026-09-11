@@ -13,6 +13,7 @@
 * 이홍비    2026.08.09     media_id 자료형 변경
 * 이홍비    2026.09.06     modifiedDate : @UpdateTimestamp 로 변경
 * 이홍비    2026.09.07     instagramUrl 추가
+* 이홍비    2026.09.07     toString() 에 출력 항목 추가
 * ========================================================
 */
 
@@ -73,7 +74,9 @@ class Post (
 ) {
     // 출력 형식 지정
     override fun toString(): String {
-        return "Post (postId : $postId, mediaId : $mediaId, productName = $productName, \n   productURL = $productUrl, \n   keyword = $keyword, \n   dmMessage = $dmMessage, " +
-                "\n   instagramCreatedDate= $instagramCreatedDate, createdDate = $createdDate, modifiedDate = $modifiedDate)"
+        return "Post (postId : $postId, mediaId : $mediaId, productName = $productName, \n" +
+                "instagramUrl = $instagramUrl, \n imageURL = $imageUrl, \n productURL = $productUrl, \n" +
+                "keyword = $keyword, \n dmMessage = $dmMessage, \n" +
+                "instagramCreatedDate= $instagramCreatedDate, createdDate = $createdDate, modifiedDate = $modifiedDate)"
     }
 }
