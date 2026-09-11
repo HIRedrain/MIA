@@ -10,10 +10,11 @@
 * 작업자        날짜        수정 / 보완 내용
 * ========================================================
 * 이홍비    2026.09.07     GlobalExceptionHandler 생성
+* 이홍비    2026.09.09     패키지 이름 변경 (common => exception)
 * ========================================================
 */
 
-package mia.common
+package mia.exception
 
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
