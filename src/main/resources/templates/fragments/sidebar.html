@@ -1,0 +1,41 @@
+<aside class="sidebar" th:fragment="sidebar(activePage)">
+  <div class="sidebar-top">
+    <a class="brand" href="/admin">
+      <div class="brand-mark">M</div>
+      <div class="brand-copy">
+        <div class="brand-title">MIA</div>
+        <div class="brand-sub">cozy automation</div>
+      </div>
+    </a>
+
+    <nav class="nav">
+      <a href="/admin" th:classappend="${activePage == 'dashboard'} ? ' active' : ''">
+        <span class="ico">⌂</span>
+        <span>대시보드</span>
+      </a>
+
+      <a href="/admin/posts" th:classappend="${activePage == 'posts'} ? ' active' : ''">
+        <span class="ico">▦</span>
+        <span>게시물 관리</span>
+      </a>
+    </nav>
+  </div>
+
+  <div class="sidebar-account">
+    <div class="sidebar-account-divider"></div>
+
+    <div class="sidebar-profile">
+      <div class="profile-avatar" data-user-avatar aria-hidden="true">M</div>
+
+      <div class="profile-copy">
+        <div class="profile-nickname" data-user-nickname>사용자</div>
+        <div class="profile-role" data-user-role>ADMIN</div>
+      </div>
+    </div>
+
+    <button class="sidebar-logout" type="button" data-logout-button>
+      <span class="logout-icon" aria-hidden="true">↪</span>
+      <span>로그아웃</span>
+    </button>
+  </div>
+</aside>
