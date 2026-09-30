@@ -1,0 +1,12 @@
+curl -X POST \
+  'https://graph.instagram.com/v25.0/me/messages' \
+  -H 'Authorization: Bearer [access-token // 보내는 사람]' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "message": {
+        "text": "Hello World // 보낼 메시지"
+    },
+    "recipient": {
+        "id": [commenter-Id // 받는 사람]
+    }
+  }'

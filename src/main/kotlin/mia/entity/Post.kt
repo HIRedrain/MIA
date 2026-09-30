@@ -1,0 +1,87 @@
+/* Post.kt
+* MIA - 인스타그램 자동화
+* 인스타그램 게시물 관련 entity
+* 작성자 : 이홍비
+* 최초 작성 날짜 : 2026.08.09
+*
+* ========================================================
+* 프로그램 수정 / 보완 이력
+* ========================================================
+* 작업자        날짜        수정 / 보완 내용
+* ========================================================
+* 이홍비    2026.08.09     entity 생성
+* 이홍비    2026.08.09     media_id 자료형 변경
+* 이홍비    2026.09.06     modifiedDate : @UpdateTimestamp 로 변경
+* 이홍비    2026.09.07     instagramUrl 추가
+* 이홍비    2026.09.07     toString() 에 출력 항목 추가
+* 이홍비    2026.10.01     dmMessage null 가능 처리
+* 이홍비    2026.10.01     imageURL 갱신 관련으로 date 추가
+* ========================================================
+*/
+
+
+package mia.entity
+
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
+import jakarta.persistence.Id
+import jakarta.persistence.Table
+import org.hibernate.annotations.CreationTimestamp
+import org.hibernate.annotations.UpdateTimestamp
+import java.time.LocalDateTime
+
+
+@Entity
+@Table(name = "post")
+class Post (
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "post_id")
+    val postId: Long? = null, // 관리용
+
+    @Column(name = "media_id", nullable = false, unique = true, length = 100)
+    val mediaId: String, // 인스타그램 - 게시물 id
+
+    @Column(name = "instagram_url", nullable = false, length = 500)
+    val instagramUrl: String,
+
+    @Column(name = "image_url", columnDefinition = "TEXT")
+    var imageUrl: String? = null,
+
+    @Column(name = "image_url_updated_date")
+    var imageUrlUpdatedDate: LocalDateTime? = null,
+
+    @Column(name = "product_name", nullable = false, length = 100)
+    var productName: String,
+
+    @Column(name = "product_url", nullable = false, columnDefinition = "TEXT")
+    var productUrl: String,
+
+    @Column(name = "keyword", nullable = false, length = 30)
+    var keyword: String,
+
+    @Column(name = "dm_message", columnDefinition = "TEXT")
+    var dmMessage: String? = null,
+
+    @Column(name = "instagram_created_date", nullable = false)
+    val instagramCreatedDate: LocalDateTime,
+
+    @CreationTimestamp
+    @Column(name = "created_date", nullable = false, updatable = false)
+    val createdDate: LocalDateTime? = null,
+
+    @UpdateTimestamp
+    @Column(name = "modified_date", nullable = false, updatable = true)
+    val modifiedDate: LocalDateTime? = null
+) {
+    // 출력 형식 지정
+    override fun toString(): String {
+        return "Post (postId : $postId, mediaId : $mediaId, productName = $productName, \n" +
+                "instagramUrl = $instagramUrl, \n imageURL = $imageUrl, \n productURL = $productUrl, \n" +
+                "keyword = $keyword, \n dmMessage = $dmMessage, \n" +
+                "instagramCreatedDate= $instagramCreatedDate, createdDate = $createdDate, modifiedDate = $modifiedDate)"
+    }
+}

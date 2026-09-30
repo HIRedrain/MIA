@@ -1,0 +1,90 @@
+/* 아래 내용을 기존 mia.css 마지막에 병합하세요. */
+
+.nav-logout{
+  width:100%;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-top:16px;
+  padding:12px 14px;
+  border:0;
+  border-radius:12px;
+  background:transparent;
+  color:#7d888d;
+  font-size:14px;
+  font-weight:650;
+  text-align:left;
+}
+
+.nav-logout:hover{
+  background:#fff;
+  color:var(--danger);
+  box-shadow:0 8px 25px rgba(50,60,65,.06);
+}
+
+.toast{
+  position:fixed;
+  left:calc(250px + (100vw - 250px) / 2);
+  top:50%;
+  transform:translate(-50%,-50%);
+  z-index:80;
+
+  min-width:340px;
+  max-width:min(620px,calc(100vw - 310px));
+  padding:20px 28px;
+
+  background:rgba(255,255,255,.97);
+  color:var(--text);
+
+  border:1px solid rgba(216,199,173,.72);
+  border-radius:18px;
+
+  box-shadow:
+    0 26px 70px rgba(44,55,60,.15),
+    0 5px 18px rgba(44,55,60,.07);
+
+  backdrop-filter:blur(10px);
+
+  font-size:19px;
+  font-weight:760;
+  line-height:1.55;
+  text-align:center;
+
+  transition:opacity .18s ease,transform .18s ease;
+}
+
+.toast::before{
+  content:"";
+  display:block;
+  width:30px;
+  height:4px;
+  margin:0 auto 12px;
+  border-radius:999px;
+  background:var(--primary);
+}
+
+.toast-hide{
+  opacity:0;
+  transform:translate(-50%,calc(-50% + 8px));
+}
+
+@media(max-width:980px){
+  .nav-logout{justify-content:center}
+  .nav-logout span:not(.ico){display:none}
+
+  .toast{
+    left:calc(82px + (100vw - 82px) / 2);
+    max-width:min(580px,calc(100vw - 130px));
+  }
+}
+
+@media(max-width:680px){
+  .toast{
+    left:50%;
+    min-width:0;
+    width:calc(100vw - 32px);
+    max-width:calc(100vw - 32px);
+    padding:19px 21px;
+    font-size:18px;
+  }
+}
