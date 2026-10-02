@@ -10,6 +10,7 @@
 * 작업자        날짜        수정 / 보완 내용
 * ========================================================
 * 이홍비    2026.08.09     Repository 생성
+* 이홍비    2026.10.03     deleteAllByMediaId() 추가
 * ========================================================
 */
 
@@ -25,5 +26,6 @@ interface CommentProcessRepository:  JpaRepository<CommentProcess, Long> {
 
     fun findCommentProcessByCommentId(commentId: String): CommentProcess?
     fun existsByCommentId(commentId: String): Boolean
+    fun deleteAllByMediaId(mediaId: String)
 
 }

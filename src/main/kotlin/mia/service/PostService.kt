@@ -19,6 +19,7 @@
 * 이홍비    2026.10.01     이미지 url 갱신 관련 처리
 * 이홍비    2026.10.01     PageImpl 경고 관련 처리
 * 이홍비    2026.10.03     릴스 관련 주소 처리 (~/reel/~ 이 아닌 ~/p/~로 입력해도 가능하게)
+* 이홍비    2026.10.03     post 삭제 시 연관된 comment_process 도 삭제 기능 추가
 * ========================================================
 */
 
@@ -33,6 +34,7 @@ import mia.dto.admin.post.PostResponse
 import mia.dto.admin.post.PostUpdateRequest
 import mia.entity.Post
 import mia.extension.toResponse
+import mia.repository.CommentProcessRepository
 import mia.repository.PostRepository
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.data.domain.Page
@@ -46,6 +48,7 @@ import java.time.LocalDateTime
 @Service
 class PostService (
     private val postRepository: PostRepository,
+    private val commentProcessRepository: CommentProcessRepository,
     private val restClient: RestClient, // 외부 API 와 통신할 때 사용하는 HTTP Client (Spring 6.1 ~)
     @Value("\${meta.instagram.access-token}") // yaml 에 저장된 토큰 값 => accessToken 변수로 저장
     private val accessToken: String
@@ -188,6 +191,9 @@ class PostService (
     fun deletePost(pid: Long) {
         val post = postRepository.findById(pid)
             .orElseThrow { IllegalArgumentException("존재하지 않는 Instagram 게시물입니다.") }
+
+        // 해당 게시물에 속한 댓글 처리 기록 삭제
+        println("✅ comment_process 삭제 : ${commentProcessRepository.deleteAllByMediaId(post.mediaId)}")
 
         println("✅ post 삭제 : ${postRepository.delete(post)}")
     }
