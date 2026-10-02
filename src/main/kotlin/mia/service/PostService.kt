@@ -18,6 +18,7 @@
 * 이홍비    2026.09.07     이미지 관련 처리
 * 이홍비    2026.10.01     이미지 url 갱신 관련 처리
 * 이홍비    2026.10.01     PageImpl 경고 관련 처리
+* 이홍비    2026.10.03     릴스 관련 주소 처리 (~/reel/~ 이 아닌 ~/p/~로 입력해도 가능하게)
 * ========================================================
 */
 
@@ -86,9 +87,28 @@ class PostService (
                 .retrieve()
                 .body(InstagramMediaListResponse::class.java)
 
+            // postURL 의 핵심 식별 부분 추출
+            val inputShortcode = extractInstagramShortcode(postURL)
+
+            println("------------------------------------------")
+            println("\uD83D\uDD34 postURL = $postURL")
+            println("\uD83D\uDD34 inputShortcode = $inputShortcode")
+            println("------------------------------------------")
+
             // 사용자가 입력한 postURL과 API에서 가져온 permalink가 일치하는 항목 탐색
             val matchedMedia = response?.data?.find { item ->
-                item.permalink != null && postURL.contains(item.permalink.removeSuffix("/"))
+                val mediaShortcode = item.permalink
+                    ?.let { extractInstagramShortcode(it) }
+
+                println("\uD83D\uDFE1 mediaId          = ${item.id}")
+                println("\uD83D\uDFE1 permalink        = [${item.permalink}]")
+                println("\uD83D\uDFE1 mediaType        = ${item.mediaType}")
+                println("\uD83D\uDFE1 thumbnailUrl     = ${item.thumbnailUrl}")
+                println("\uD83D\uDFE1 mediaShortcode = $mediaShortcode")
+                println("------------------------------------------")
+
+                // 만약 셋 다 true => find ; "찾았음!" => 해당 item 반환
+                (inputShortcode != null) && (mediaShortcode != null) && (inputShortcode == mediaShortcode)
             }
 
             return matchedMedia
@@ -96,6 +116,17 @@ class PostService (
             println("❌ 인스타그램 API 호출 중 오류 발생: ${e.message}")
             return null
         }
+    }
+
+    // instagram url 의 핵심 식별 부분 추출 ; /p/~ 여기서 ~ 부분이 핵심임
+    // https://www.instagram.com/p/ABCD
+    // https://www.instagram.com/reel/ABCD
+    // => ABCD 가 핵심 => 해당 부분 추출
+    // => 이걸로 getMediaFromPostURL() 에서 동일한 게시물인지 조회할 것
+    private fun extractInstagramShortcode(url: String): String? {
+        val regex = Regex("""instagram\.com/(?:p|reel|reels)/([^/?#]+)""")
+
+        return regex.find(url)?.groupValues?.get(1)
     }
 
     @Transactional
