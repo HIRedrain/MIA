@@ -15,6 +15,7 @@
 *                         url 과 message 한 번에 보내기
 * 이홍비    2026.09.07     process() 내 코드 순서 변경
 * 이홍비    2026.09.28     DM 전송 시 답글 작성 기능 추가
+* 이홍비    2026.10.03     DM 전송 시 답글 문구 변경
 * ========================================================
 */
 
@@ -115,7 +116,7 @@ class InstagramCommentService (
         try {
             replyToComment(
                 commentId = request.commentId,
-                message = "\uD83D\uDC8C DM 전송 완료! 확인해 주세요!"
+                message = "\uD83D\uDC8C DM 전송 완료! 보이지 않는다면 ‘메시지 요청함’을 확인해 주세요 \uD83D\uDE0A"
             )
         } catch (e: Exception) {
             e.printStackTrace()
